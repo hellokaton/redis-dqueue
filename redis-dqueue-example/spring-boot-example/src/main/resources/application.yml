@@ -1,0 +1,5 @@
+server:
+  port: 12333
+
+rdqueue:
+  redisURI: redis://172.16.5.164:6380
