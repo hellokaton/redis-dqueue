@@ -2,7 +2,6 @@ package io.github.biezhi.redisdqueue.job;
 
 import io.github.biezhi.redisdqueue.configuration.Config;
 import io.github.biezhi.redisdqueue.core.DQRedis;
-import io.lettuce.core.Range;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;

@@ -17,14 +17,14 @@ import java.util.List;
 class BaseJob {
 
 	DQRedis redis;
-	Config config;
+	Config  config;
 
 	BaseJob(Config config, DQRedis dqRedis) {
 		this.config = config;
 		this.redis = dqRedis;
 	}
 
-	List<String> zrangebyscore(String key, long begin, long end){
+	List<String> zrangebyscore(String key, long begin, long end) {
 		return redis.zrangebyscore(key, Range.create(begin, end));
 	}
 

@@ -2,7 +2,6 @@ package io.github.biezhi.redisdqueue.configuration;
 
 import io.github.biezhi.redisdqueue.core.Callback;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

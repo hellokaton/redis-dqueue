@@ -1,7 +1,7 @@
 package io.github.biezhi.redisdqueue.spring;
 
-import io.github.biezhi.redisdqueue.core.Callback;
 import io.github.biezhi.redisdqueue.configuration.Config;
+import io.github.biezhi.redisdqueue.core.Callback;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
