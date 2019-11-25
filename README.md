@@ -43,7 +43,7 @@ With Maven
 ```xml
 <dependency>
     <groupId>io.github.biezhi</groupId>
-    <artifactId>redis-dqueue-core</artifactId>
+    <artifactId>redis-dqueue-spring-boot-starter</artifactId>
     <version>[LATEST_VERSION]</version>
 </dependency>
 ```
