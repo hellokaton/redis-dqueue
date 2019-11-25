@@ -79,16 +79,16 @@ You need to implement `MessageListener`, subscribe to the related topic, process
 @Component
 public class OrderCancelListener implements MessageListener<String> {
     
-	@Override
-	public String topic() {
-		return "order-cancel";
-	}
+    @Override
+    public String topic() {
+        return "order-cancel";
+    }
     
-	@Override
-	public ConsumeStatus execute(String data) {
-		log.info("取消订单: {}", data);
-		return ConsumeStatus.CONSUMED;
-	}
+    @Override
+    public ConsumeStatus execute(String data) {
+        log.info("取消订单: {}", data);
+        return ConsumeStatus.CONSUMED;
+    }
     
 }
 ```
