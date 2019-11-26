@@ -11,7 +11,9 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-
+.idea/
+*.iml
+redis-dqueue-spring-boot-starter/redis-dqueue-spring.iml
 # External tool builders
 .externalToolBuilders/
 
