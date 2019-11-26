@@ -36,6 +36,20 @@ rdQueue.asyncPush(message, (key, throwable) -> log.info("key send ok:" + key));
 rdQueue.subscribe("TEST_TOPIC", callback());
 ```
 
+**Callback**
+
+```java
+private static Callback<String> callback() {
+    return new Callback<String>() {
+        @Override
+        public ConsumeStatus execute(String data) {
+            log.info("消费数据:: {}", data);
+            return ConsumeStatus.CONSUMED;
+        }
+    };
+}
+```
+
 ## Spring Boot Application
 
 With Maven
@@ -55,15 +69,13 @@ With Maven
 private RDQueueTemplate rdQueueTemplate;
 
 @GetMapping("/push")
-public String index(String id) throws RDQException {
+public String push(String id) throws RDQException {
     Message<String> message = new Message<>();
     message.setTopic("order-cancel");
     message.setPayload(id);
     message.setDelayTime(10);
     rdQueueTemplate.asyncPush(message, (s, throwable) -> {
-        if (null != throwable) {
-            throwable.printStackTrace();
-        }
+      // TODO async push result
     });
     return "推送成功";
 }
