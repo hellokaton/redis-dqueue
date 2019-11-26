@@ -6,7 +6,6 @@ import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -26,8 +25,6 @@ public class DQRedis {
 	private StatefulRedisClusterConnection<String, String> clusterConnection;
 
 	private boolean isCluster;
-
-	private static AtomicReference<String> LUA_SHA = new AtomicReference<>();
 
 	public DQRedis(String redisURI, List<String> cluster) {
 		if (null != cluster) {
@@ -51,11 +48,11 @@ public class DQRedis {
 		}
 	}
 
-	public List<String> zrangebyscore(String key, Range<? extends Number> range) {
+	public List<String> zrangebyscore(String key, Range<? extends Number> range, Limit limit) {
 		if (isCluster) {
-			return clusterConnection.sync().zrangebyscore(key, range);
+			return clusterConnection.sync().zrangebyscore(key, range, limit);
 		} else {
-			return connection.sync().zrangebyscore(key, range);
+			return connection.sync().zrangebyscore(key, range, limit);
 		}
 	}
 
