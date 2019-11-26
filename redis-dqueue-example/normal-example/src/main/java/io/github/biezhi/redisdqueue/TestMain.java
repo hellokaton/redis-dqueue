@@ -22,7 +22,7 @@ public class TestMain {
 				"hello world", 10);
 
 		// 发送延迟消息
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 3; i++) {
 			message.setPayload("hello world:::" + i);
 			rdQueue.asyncPush(message, (key, throwable) -> log.info("key send ok:" + key));
 		}
@@ -37,7 +37,13 @@ public class TestMain {
 		return new Callback<String>() {
 			@Override
 			public ConsumeStatus execute(String data) {
-				log.info("消费数据:: {}", data);
+				log.info("消费数据开始:: {}", data);
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				log.info("消费数据结束:: {}", data);
 				return ConsumeStatus.CONSUMED;
 //			return ConsumeStatus.RETRY;
 			}

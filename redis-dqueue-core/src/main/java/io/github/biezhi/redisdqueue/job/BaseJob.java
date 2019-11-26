@@ -5,6 +5,7 @@ import io.github.biezhi.redisdqueue.constans.LuaScriptConst;
 import io.github.biezhi.redisdqueue.core.DQRedis;
 import io.github.biezhi.redisdqueue.core.RawMessage;
 import io.github.biezhi.redisdqueue.utils.GsonUtil;
+import io.lettuce.core.Limit;
 import io.lettuce.core.Range;
 import io.lettuce.core.ScriptOutputType;
 
@@ -25,7 +26,7 @@ class BaseJob {
 	}
 
 	List<String> zrangebyscore(String key, long begin, long end) {
-		return redis.zrangebyscore(key, Range.create(begin, end));
+		return redis.zrangebyscore(key, Range.create(begin, end), Limit.create(0L, 1000L));
 	}
 
 	RawMessage getTask(String key) {

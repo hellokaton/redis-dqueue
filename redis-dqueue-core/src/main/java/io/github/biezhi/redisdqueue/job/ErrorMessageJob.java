@@ -30,9 +30,11 @@ public class ErrorMessageJob extends BaseJob implements Runnable {
 			return;
 		}
 
-		for (String key : keys) {
-			transferMessage(key, config.getErrorKey(), config.getDelayKey(), Instant.now().getEpochSecond());
-		}
+		keys.stream()
+				.filter(config::waitProcessing)
+				.forEach(key ->
+						transferMessage(key, config.getErrorKey(), config.getDelayKey(), Instant.now().getEpochSecond())
+				);
 	}
 
 }

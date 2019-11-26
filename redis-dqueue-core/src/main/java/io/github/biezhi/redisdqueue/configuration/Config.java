@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Config
@@ -28,11 +30,11 @@ public class Config {
 
 	private List<String> cluster;
 
-	private int fetchBeforeSeconds = 30 * 60;
-
 	private int retryInterval = 10;
 
 	private int taskTtl = 24 * 3600;
+
+	private int callbackTtl = 3;
 
 	private int maxJobCoreSize = Runtime.getRuntime().availableProcessors() * 2;
 
@@ -45,6 +47,12 @@ public class Config {
 	 * ::VALUE -> CALLBACK INSTANCE
 	 */
 	private Map<String, Callback> callbacks = new ConcurrentHashMap<>();
+
+	/**
+	 * The key in the processing in a single JVM is managed in the collection,
+	 * to ensure that only a task in the implementation
+	 */
+	private Set<String> processedKeys = new CopyOnWriteArraySet<>();
 
 	public String getDelayKey() {
 		return this.keyPrefix + "keys";
@@ -60,6 +68,22 @@ public class Config {
 
 	public String getHashKey() {
 		return this.keyPrefix + "hash";
+	}
+
+	public boolean isProcessing(String key) {
+		return processedKeys.contains(key);
+	}
+
+	public boolean waitProcessing(String key) {
+		return !isProcessing(key);
+	}
+
+	public void addProcessed(String key) {
+		processedKeys.add(key);
+	}
+
+	public void processed(String key) {
+		processedKeys.remove(key);
 	}
 
 }

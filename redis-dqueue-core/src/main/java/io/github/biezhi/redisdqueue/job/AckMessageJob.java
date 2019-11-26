@@ -29,9 +29,13 @@ public class AckMessageJob extends BaseJob implements Runnable {
 		if (null == keys || keys.isEmpty()) {
 			return;
 		}
-		for (String key : keys) {
-			transferMessage(key, config.getAckKey(), config.getDelayKey(), Instant.now().getEpochSecond());
-		}
+
+		keys.stream()
+				.filter(config::waitProcessing)
+				.forEach(key ->
+						transferMessage(key, config.getAckKey(), config.getDelayKey(), Instant.now().getEpochSecond())
+				);
+
 	}
 
 }

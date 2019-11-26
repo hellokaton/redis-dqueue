@@ -40,21 +40,23 @@ public class DelayMessageJob extends BaseJob implements Runnable {
 			return;
 		}
 
-		long now = Instant.now().getEpochSecond();
+		long now   = Instant.now().getEpochSecond();
+		long begin = now - config.getTaskTtl();
+		long end   = now - config.getCallbackTtl();
 
-		long begin = now - config.getFetchBeforeSeconds();
-
-		List<String> keys = zrangebyscore(config.getDelayKey(), begin, now);
+		List<String> keys = zrangebyscore(config.getDelayKey(), begin, end);
 		if (null == keys || keys.isEmpty()) {
 			return;
 		}
 
 		keys.stream()
+				.filter(config::waitProcessing)
 				.map(key -> (Runnable) () -> handleCallback(key))
 				.forEach(threadPool::submit);
 	}
 
 	private <T extends Serializable> void handleCallback(final String key) {
+		config.addProcessed(key);
 		RawMessage rawMessage = getTask(key);
 		if (null == rawMessage) {
 			return;
@@ -67,6 +69,7 @@ public class DelayMessageJob extends BaseJob implements Runnable {
 		// will delay message dump to wait for an ack confirmed
 		// that only allows a consumer operating at this time
 		if (!this.transferMessage(key, config.getDelayKey(), config.getAckKey(), score)) {
+			config.processed(key);
 			return;
 		}
 
@@ -88,6 +91,7 @@ public class DelayMessageJob extends BaseJob implements Runnable {
 			// consumption is successful, delete the message
 			this.deleteMessage(key);
 		}
+		config.processed(key);
 	}
 
 	private void retry(String key, RawMessage rawMessage) {
