@@ -11,6 +11,8 @@
 
     <artifactId>redis-dqueue-spring-boot-starter</artifactId>
 
+    <version>${redis-dqueue.version}</version>
+
     <dependencies>
         <dependency>
             <groupId>io.github.biezhi</groupId>
