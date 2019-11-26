@@ -19,14 +19,14 @@ public class RDQueueProperties {
 
 	private String dqueuePrefix = DEFAULT_DQUEUE_NAME;
 
-	private int fetchBeforeSeconds = 30 * 60;
-
 	private String redisURI = "redis://localhost/";
 
 	@Deprecated
 	private List<String> cluster;
 
 	private int retryInterval = 10;
+
+	private int callbackTtl = 3;
 
 	private int taskTtl = 24 * 3600;
 

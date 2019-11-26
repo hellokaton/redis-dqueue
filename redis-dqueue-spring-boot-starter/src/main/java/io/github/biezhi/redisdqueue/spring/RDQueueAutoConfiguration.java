@@ -26,11 +26,10 @@ public class RDQueueAutoConfiguration {
 	public Config dqConfig() {
 		Config config = new Config();
 		config.setKeyPrefix(properties.getDqueuePrefix());
-		config.setFetchBeforeSeconds(properties.getFetchBeforeSeconds());
+		config.setCallbackTtl(properties.getCallbackTtl());
 		config.setTaskTtl(properties.getTaskTtl());
 		config.setMaxJobCoreSize(properties.getMaxJobCoreSize());
 		config.setMaxCallbackCoreSize(properties.getMaxCallbackCoreSize());
-		config.setCluster(properties.getCluster());
 		return config;
 	}
 
