@@ -14,17 +14,23 @@ public interface LuaScriptConst {
 			"local id_ = KEYS[3]\n" +
 			"local hash_value = ARGV[1]\n" +
 			"local zset_score = ARGV[2]\n" +
-			"local result = redis.call('ZADD', zset_key, zset_score, id_)\n" +
-			"redis.call('HSET', hash_key, id_, hash_value)\n" +
-			"return result;";
+			"if redis.call('ZADD', zset_key, zset_score, id_) == 1 then\n" +
+			"   redis.call('HSET', hash_key, id_, hash_value)\n" +
+			"   return 1;\n" +
+			"else\n" +
+			"   return 0;\n" +
+			"end";
 
 	String TRANSFER_MESSAGE = "" +
 			"local from_key = KEYS[1]\n" +
 			"local to_key = KEYS[2]\n" +
 			"local id_ = KEYS[3]\n" +
 			"local zset_score = ARGV[1]\n" +
-			"redis.call('ZADD', to_key, zset_score, id_)\n" +
-			"local result = redis.call('ZREM', from_key, id_)\n" +
-			"return result;";
+			"if redis.call('ZREM', from_key, id_) == 1 then\n" +
+			"   redis.call('ZADD', to_key, zset_score, id_)\n" +
+			"	return 1;\n" +
+			"else\n" +
+			"	return 0;\n" +
+			"end";
 
 }

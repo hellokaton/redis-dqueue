@@ -22,7 +22,10 @@ public class TestMain {
 				"hello world", 10);
 
 		// 发送延迟消息
-		rdQueue.asyncPush(message, (key, throwable) -> log.info("key send ok:" + key));
+		for (int i = 0; i < 10000; i++) {
+			message.setPayload("hello world:::" + i);
+			rdQueue.asyncPush(message, (key, throwable) -> log.info("key send ok:" + key));
+		}
 
 		// 订阅消息
 		rdQueue.subscribe("TEST_TOPIC", callback());
