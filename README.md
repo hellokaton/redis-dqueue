@@ -9,6 +9,8 @@
 - Based on the message separation of the topic
 - Integrated SpringBoot
 
+**[Wiki](https://github.com/biezhi/redis-dqueue/wiki)**
+
 ## Normal Java Application
 
 With Maven
@@ -17,7 +19,7 @@ With Maven
 <dependency>
     <groupId>io.github.biezhi</groupId>
     <artifactId>redis-dqueue-core</artifactId>
-    <version>[LATEST_VERSION]</version>
+    <version>0.0.1</version>
 </dependency>
 ```
 
@@ -58,7 +60,7 @@ With Maven
 <dependency>
     <groupId>io.github.biezhi</groupId>
     <artifactId>redis-dqueue-spring-boot-starter</artifactId>
-    <version>[LATEST_VERSION]</version>
+    <version>0.0.1</version>
 </dependency>
 ```
 
