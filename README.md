@@ -2,14 +2,19 @@
 
 `redis-dqueue` is a `redis` + `Java 8` base delayed queue library.
 
+**[Document](https://github.com/biezhi/redis-dqueue/wiki)**
+
+[![Travis Build](https://travis-ci.org/biezhi/redis-dqueue.svg?branch=master)](https://travis-ci.org/biezhi/redis-dqueue)
+[![](https://img.shields.io/maven-central/v/io.github.biezhi/redis-dqueue.svg)](https://mvnrepository.com/artifact/io.github.biezhi/redis-dqueue)
+[![License](https://img.shields.io/badge/license-Apache2-blue.svg)](https://github.com/biezhi/redis-dqueue/blob/master/LICENSE)
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/biezhii.svg?style=social&label=Follow%20Twitter)](https://twitter.com/biezhii)
+
 ## Feature
 
 - Push message delay
 - Consumer allowed to try again
 - Based on the message separation of the topic
 - Integrated SpringBoot
-
-**[Wiki](https://github.com/biezhi/redis-dqueue/wiki)**
 
 ## Normal Java Application
 
