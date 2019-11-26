@@ -9,6 +9,10 @@
     <packaging>pom</packaging>
     <version>0.0.1</version>
 
+    <name>redis-dqueue</name>
+    <url>https://github.com/biezhi/redis-dqueue</url>
+    <description>Java 8 + Redis delayed queue</description>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
