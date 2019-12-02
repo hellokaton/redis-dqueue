@@ -44,15 +44,19 @@ public class DelayMessageJob extends BaseJob implements Runnable {
 		long begin = now - config.getTaskTtl();
 		long end   = now - config.getCallbackTtl();
 
-		List<String> keys = zrangebyscore(config.getDelayKey(), begin, end);
-		if (null == keys || keys.isEmpty()) {
-			return;
-		}
+		try {
+			List<String> keys = zrangebyscore(config.getDelayKey(), begin, end);
+			if (null == keys || keys.isEmpty()) {
+				return;
+			}
 
-		keys.stream()
-				.filter(config::waitProcessing)
-				.map(key -> (Runnable) () -> handleCallback(key))
-				.forEach(threadPool::submit);
+			keys.stream()
+					.filter(config::waitProcessing)
+					.map(key -> (Runnable) () -> handleCallback(key))
+					.forEach(threadPool::submit);
+		} catch (Exception e) {
+			log.error("zrangebyscore({}, {}-{})", config.getDelayKey(), begin, now, e);
+		}
 	}
 
 	private <T extends Serializable> void handleCallback(final String key) {

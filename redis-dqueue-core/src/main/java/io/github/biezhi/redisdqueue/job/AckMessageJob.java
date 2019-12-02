@@ -25,16 +25,20 @@ public class AckMessageJob extends BaseJob implements Runnable {
 		long now   = Instant.now().getEpochSecond();
 		long begin = now - config.getTaskTtl();
 
-		List<String> keys = zrangebyscore(config.getAckKey(), begin, now);
-		if (null == keys || keys.isEmpty()) {
-			return;
-		}
+		try {
+			List<String> keys = zrangebyscore(config.getAckKey(), begin, now);
+			if (null == keys || keys.isEmpty()) {
+				return;
+			}
 
-		keys.stream()
-				.filter(config::waitProcessing)
-				.forEach(key ->
-						transferMessage(key, config.getAckKey(), config.getDelayKey(), Instant.now().getEpochSecond())
-				);
+			keys.stream()
+					.filter(config::waitProcessing)
+					.forEach(key ->
+							transferMessage(key, config.getAckKey(), config.getDelayKey(), Instant.now().getEpochSecond())
+					);
+		} catch (Exception e){
+			log.error("zrangebyscore({}, {}-{})", config.getAckKey(), begin, now, e);
+		}
 
 	}
 
