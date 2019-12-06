@@ -25,6 +25,7 @@ public class RDQueueAutoConfiguration {
 	@ConditionalOnMissingBean
 	public Config dqConfig() {
 		Config config = new Config();
+		config.setRedisURI(properties.getRedisURI());
 		config.setKeyPrefix(properties.getDqueuePrefix());
 		config.setCallbackTtl(properties.getCallbackTtl());
 		config.setTaskTtl(properties.getTaskTtl());
