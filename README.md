@@ -24,7 +24,7 @@ With Maven
 <dependency>
     <groupId>io.github.biezhi</groupId>
     <artifactId>redis-dqueue-core</artifactId>
-    <version>0.0.2.RELEASE</version>
+    <version>0.0.3.ALPHA</version>
 </dependency>
 ```
 
@@ -65,7 +65,7 @@ With Maven
 <dependency>
     <groupId>io.github.biezhi</groupId>
     <artifactId>redis-dqueue-spring-boot-starter</artifactId>
-    <version>0.0.2.RELEASE</version>
+    <version>0.0.3.ALPHA</version>
 </dependency>
 ```
 
