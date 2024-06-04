@@ -13,18 +13,22 @@ import java.util.function.BiConsumer;
  */
 public class RDQueueTemplate {
 
-	private RDQueue rdQueue;
+    private RDQueue rdQueue;
 
-	public RDQueueTemplate(RDQueue rdQueue) {
-		this.rdQueue = rdQueue;
-	}
+    public RDQueueTemplate(RDQueue rdQueue) {
+        this.rdQueue = rdQueue;
+    }
 
-	public <T extends Serializable> void syncPush(Message<T> message) throws RDQException {
-		rdQueue.syncPush(message);
-	}
+    public <T extends Serializable> void syncPush(Message<T> message) throws RDQException {
+        rdQueue.syncPush(message);
+    }
 
-	public <T extends Serializable> void asyncPush(Message<T> message, BiConsumer<String, ? super Throwable> action) throws RDQException {
-		rdQueue.asyncPush(message, action);
-	}
+    public <T extends Serializable> void asyncPush(Message<T> message, BiConsumer<String, ? super Throwable> action) throws RDQException {
+        rdQueue.asyncPush(message, action);
+    }
+
+    public <T extends Serializable> void asyncPush(String key, Message<T> message, BiConsumer<String, ? super Throwable> action) throws RDQException {
+        rdQueue.asyncPush(key, message, action);
+    }
 
 }

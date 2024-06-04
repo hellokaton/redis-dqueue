@@ -1,6 +1,7 @@
 package io.github.biezhi.rdqueue.example;
 
 import io.github.biezhi.redisdqueue.core.Message;
+import io.github.biezhi.redisdqueue.core.RawMessage;
 import io.github.biezhi.redisdqueue.exception.RDQException;
 import io.github.biezhi.redisdqueue.spring.RDQueueTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class Application {
 		message.setTopic("order-cancel");
 		message.setPayload(id);
 		message.setDelayTime(10);
-		rdQueueTemplate.asyncPush(message, (s, throwable) -> {
+		String key = "111";
+		rdQueueTemplate.asyncPush(key, message, (s, throwable) -> {
 			if (null != throwable) {
 				throwable.printStackTrace();
 			} else {

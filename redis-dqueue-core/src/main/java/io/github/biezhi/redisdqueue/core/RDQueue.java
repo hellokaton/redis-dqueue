@@ -29,7 +29,7 @@ public class RDQueue {
 
 	private DQRedis dqRedis;
 
-	private Config config;
+	private final Config config;
 
 	public RDQueue(Config config) {
 		this.config = config;
@@ -55,21 +55,19 @@ public class RDQueue {
 		jobThreadPool.scheduleAtFixedRate(new ErrorMessageJob(config, dqRedis), 0, 1000, TimeUnit.MILLISECONDS);
 	}
 
-	public void asyncPush(Message message, BiConsumer<String, ? super Throwable> action) throws RDQException {
+	public void asyncPush(Message<?> message, BiConsumer<String, ? super Throwable> action) throws RDQException {
 		this.push(message, action, true);
 	}
 
-	public void syncPush(Message message) throws RDQException {
-		this.push(message, null, false);
+	public void asyncPush(String key, Message<?> message, BiConsumer<String, ? super Throwable> action) throws RDQException {
+		this.push(key, message, action, true);
 	}
 
-	private void push(Message message, BiConsumer<String, ? super Throwable> action, boolean asyncExecute) throws RDQException {
+	private void push(String key, Message<?> message, BiConsumer<String, ? super Throwable> action, boolean asyncExecute) throws RDQException {
 		this.checkQueue(config.getKeyPrefix(), message);
 
 		String queueKey = config.getDelayKey();
 		log.info("push message {}", message);
-
-		String key = UUID.randomUUID().toString().replace("-", "");
 
 		RawMessage rawMessage = buildTask(key, message);
 		String     hashValue  = GsonUtil.toJson(rawMessage);
@@ -87,7 +85,16 @@ public class RDQueue {
 		}
 	}
 
-	private RawMessage buildTask(String key, Message message) {
+	public void syncPush(Message<?> message) throws RDQException {
+		this.push(message, null, false);
+	}
+
+	private void push(Message<?> message, BiConsumer<String, ? super Throwable> action, boolean asyncExecute) throws RDQException {
+		String key = UUID.randomUUID().toString().replace("-", "");
+		push(key, message, action, asyncExecute);
+	}
+
+	private RawMessage buildTask(String key, Message<?> message) {
 		long delayTime = message.getTimeUnit().toSeconds(message.getDelayTime());
 
 		long now = Instant.now().getEpochSecond();
@@ -110,7 +117,7 @@ public class RDQueue {
 		return rawMessage;
 	}
 
-	private void checkQueue(String queueName, Message message) throws RDQException {
+	private void checkQueue(String queueName, Message<?> message) throws RDQException {
 		if (null == queueName || queueName.isEmpty()) {
 			throw new RDQException("queue name can not be empty.");
 		}
@@ -124,7 +131,7 @@ public class RDQueue {
 		}
 	}
 
-	public void subscribe(String topic, Callback callback) {
+	public void subscribe(String topic, Callback<?> callback) {
 		log.info("listen the topic [{}]", topic);
 		config.getCallbacks().put(topic, callback);
 	}
