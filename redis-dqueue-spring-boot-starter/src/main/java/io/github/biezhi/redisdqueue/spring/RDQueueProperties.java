@@ -21,6 +21,14 @@ public class RDQueueProperties {
 
 	private String redisURI = "redis://localhost/";
 
+	private boolean hasPassword = false;
+
+	private String password = "";
+
+	private String host = "localhost";
+
+	private int port = 6379;
+
 	@Deprecated
 	private List<String> cluster;
 

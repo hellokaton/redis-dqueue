@@ -40,6 +40,20 @@ public class DQRedis {
 		}
 	}
 
+	public DQRedis(RedisURI redisURI, List<String> cluster) {
+		if (null != cluster) {
+			List<RedisURI> nodes = cluster.stream()
+					.map(RedisURI::create)
+					.collect(Collectors.toList());
+			this.clusterClient = RedisClusterClient.create(nodes);
+			this.isCluster = true;
+			this.clusterConnection = clusterClient.connect();
+		} else {
+			this.redisClient = RedisClient.create(redisURI);
+			this.connection = redisClient.connect();
+		}
+	}
+
 	public Long syncEval(String script, ScriptOutputType type, String[] keys, String... values) {
 		if (isCluster) {
 			return clusterConnection.sync().eval(script, type, keys, values);

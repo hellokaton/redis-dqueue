@@ -9,6 +9,7 @@ import io.github.biezhi.redisdqueue.job.ErrorMessageJob;
 import io.github.biezhi.redisdqueue.utils.ClassUtil;
 import io.github.biezhi.redisdqueue.utils.GsonUtil;
 import io.github.biezhi.redisdqueue.utils.ThreadUtil;
+import io.lettuce.core.RedisURI;
 import io.lettuce.core.ScriptOutputType;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +38,16 @@ public class RDQueue {
 	}
 
 	private void init() {
-		this.dqRedis = new DQRedis(config.getRedisURI(), config.getCluster());
+		this.dqRedis = null;
+		if (config.isHasPassword()) {
+			RedisURI redisURI = new RedisURI();
+			redisURI.setHost(config.getHost());
+			redisURI.setPort(config.getPort());
+			redisURI.setPassword(config.getPassword());
+			this.dqRedis = new DQRedis(redisURI, config.getCluster());
+		} else {
+			this.dqRedis = new DQRedis(config.getRedisURI(), config.getCluster());
+		}
 
 		log.info("redis-dqueue starting...");
 
@@ -87,6 +97,10 @@ public class RDQueue {
 
 	public void syncPush(Message<?> message) throws RDQException {
 		this.push(message, null, false);
+	}
+
+	public void syncPush(String key, Message<?> message) throws RDQException {
+		this.push(key, message, null, false);
 	}
 
 	private void push(Message<?> message, BiConsumer<String, ? super Throwable> action, boolean asyncExecute) throws RDQException {

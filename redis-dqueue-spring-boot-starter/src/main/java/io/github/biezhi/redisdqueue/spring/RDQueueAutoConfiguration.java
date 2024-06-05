@@ -26,6 +26,10 @@ public class RDQueueAutoConfiguration {
 	public Config dqConfig() {
 		Config config = new Config();
 		config.setRedisURI(properties.getRedisURI());
+		config.setHasPassword(properties.isHasPassword());
+		config.setHost(properties.getHost());
+		config.setPort(properties.getPort());
+		config.setPassword(properties.getPassword());
 		config.setKeyPrefix(properties.getDqueuePrefix());
 		config.setCallbackTtl(properties.getCallbackTtl());
 		config.setTaskTtl(properties.getTaskTtl());
