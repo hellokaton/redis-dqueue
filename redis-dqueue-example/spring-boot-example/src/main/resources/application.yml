@@ -2,4 +2,10 @@ server:
   port: 12333
 
 rdqueue:
-  redisURI: redis://172.16.5.164:6380
+  # 无密码的情况
+  #redisURI: redis://127.0.0.1:6379
+  # 有密码的情况
+  has-password: true
+  host: 127.0.0.1
+  port: 6379
+  password:

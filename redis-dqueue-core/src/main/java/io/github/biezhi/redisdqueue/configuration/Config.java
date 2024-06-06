@@ -28,6 +28,14 @@ public class Config {
 
 	private String redisURI = "redis://localhost/";
 
+	private boolean hasPassword = false;
+
+	private String password = "";
+
+	private String host = "localhost";
+
+	private int port = 6379;
+
 	private List<String> cluster;
 
 	private int retryInterval = 10;
