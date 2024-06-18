@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.RoundingMode;
+
 @RestController
 @SpringBootApplication
 public class Application {
@@ -19,9 +21,10 @@ public class Application {
 
 	@GetMapping("/push")
 	public String index(String id) throws RDQException {
+		Double round = Math.random();
 		Message<String> message = new Message<>();
 		message.setTopic("order-cancel");
-		message.setPayload(id);
+		message.setPayload(String.valueOf(round));
 		message.setDelayTime(10);
 		String key = "111";
 		rdQueueTemplate.asyncPush(key, message, (s, throwable) -> {
@@ -31,6 +34,20 @@ public class Application {
 				System.out.println("s" + s);
 			}
 		});
+
+		Message<String> messagePush = new Message<>();
+		messagePush.setTopic("order-push");
+		messagePush.setPayload(String.valueOf(round));
+		messagePush.setDelayTime(1);
+		rdQueueTemplate.asyncPush(messagePush, (s, throwable) -> {
+			if (null != throwable) {
+				throwable.printStackTrace();
+			} else {
+				System.out.println("s" + s);
+			}
+		});
+
+
 		return "推送成功";
 	}
 
