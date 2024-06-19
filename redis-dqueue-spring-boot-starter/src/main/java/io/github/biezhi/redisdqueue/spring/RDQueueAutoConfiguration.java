@@ -30,6 +30,7 @@ public class RDQueueAutoConfiguration {
 		config.setHost(properties.getHost());
 		config.setPort(properties.getPort());
 		config.setPassword(properties.getPassword());
+		config.setOverrideUpdate(properties.isOverrideUpdate());
 		config.setKeyPrefix(properties.getDqueuePrefix());
 		config.setCallbackTtl(properties.getCallbackTtl());
 		config.setTaskTtl(properties.getTaskTtl());

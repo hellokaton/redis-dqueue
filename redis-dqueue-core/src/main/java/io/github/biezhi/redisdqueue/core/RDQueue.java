@@ -51,7 +51,7 @@ public class RDQueue {
 
 		log.info("redis-dqueue starting...");
 
-		int maxJobCoreSize      = config.getMaxJobCoreSize();
+		int maxJobCoreSize = config.getMaxJobCoreSize();
 		int maxCallbackCoreSize = config.getMaxCallbackCoreSize();
 
 		ScheduledExecutorService jobThreadPool =
@@ -80,17 +80,19 @@ public class RDQueue {
 		log.info("push message {}", message);
 
 		RawMessage rawMessage = buildTask(key, message);
-		String     hashValue  = GsonUtil.toJson(rawMessage);
+		String hashValue = GsonUtil.toJson(rawMessage);
 
 		String[] keys = new String[]{config.getHashKey(), queueKey, key};
 		String[] args = new String[]{hashValue, rawMessage.getExecuteTime() + ""};
 
 		if (asyncExecute) {
-			dqRedis.asyncEval(LuaScriptConst.PUSH_MESSAGE, ScriptOutputType.INTEGER, keys, args)
+			dqRedis.asyncEval(config.isOverrideUpdate() ? LuaScriptConst.ALL_UPDATE_PUSH_MESSAGE : LuaScriptConst.PUSH_MESSAGE,
+							ScriptOutputType.INTEGER, keys, args)
 					.thenApply(NULL -> key)
 					.whenComplete(action);
 		} else {
-			Long result = dqRedis.syncEval(LuaScriptConst.PUSH_MESSAGE, ScriptOutputType.INTEGER, keys, args);
+			Long result = dqRedis.syncEval(config.isOverrideUpdate() ? LuaScriptConst.ALL_UPDATE_PUSH_MESSAGE : LuaScriptConst.PUSH_MESSAGE,
+					ScriptOutputType.INTEGER, keys, args);
 			log.debug("sync push result: {}", result);
 		}
 	}
@@ -153,5 +155,4 @@ public class RDQueue {
 	public void shutdown() {
 		dqRedis.shutdown();
 	}
-
 }

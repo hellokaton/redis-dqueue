@@ -40,7 +40,8 @@ class BaseJob {
 	boolean transferMessage(String key, String from, String to, long score) {
 		String[] keys  = new String[]{from, to, key};
 		String[] args  = new String[]{score + ""};
-		Long     count = redis.syncEval(LuaScriptConst.TRANSFER_MESSAGE, ScriptOutputType.INTEGER, keys, args);
+		Long     count = redis.syncEval(config.isOverrideUpdate() ? LuaScriptConst.ALL_UPDATE_TRANSFER_MESSAGE : LuaScriptConst.TRANSFER_MESSAGE,
+				ScriptOutputType.INTEGER, keys, args);
 		return null != count && count == 1;
 	}
 

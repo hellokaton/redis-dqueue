@@ -36,6 +36,8 @@ public class Config {
 
 	private int port = 6379;
 
+	private boolean overrideUpdate = false;
+
 	private List<String> cluster;
 
 	private int retryInterval = 10;
