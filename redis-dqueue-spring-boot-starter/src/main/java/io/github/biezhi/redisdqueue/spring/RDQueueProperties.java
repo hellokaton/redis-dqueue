@@ -29,6 +29,8 @@ public class RDQueueProperties {
 
 	private int port = 6379;
 
+	private boolean overrideUpdate = false;
+
 	@Deprecated
 	private List<String> cluster;
 
