@@ -23,6 +23,10 @@ public class RDQueueTemplate {
         rdQueue.syncPush(message);
     }
 
+    public <T extends Serializable> void syncPush(String key, Message<T> message) throws RDQException {
+        rdQueue.syncPush(key, message);
+    }
+
     public <T extends Serializable> void asyncPush(Message<T> message, BiConsumer<String, ? super Throwable> action) throws RDQException {
         rdQueue.asyncPush(message, action);
     }
